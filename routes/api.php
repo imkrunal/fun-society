@@ -14,11 +14,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
+
+    // Auth
+    Route::post('auth/login', 'Auth\LoginController@login');
+
+    // Countries
     Route::group(['prefix' => 'countries'], function () {
         Route::get('/', 'CountriesController@index');
-        Route::post('/', 'CountriesController@create');
         Route::get('/{country}', 'CountriesController@show');
-        Route::post('/{country}', 'CountriesController@update');
-        Route::delete('/{country}', 'CountriesController@delete');
+
+        Route::group(['middleware' => 'auth:sanctum'], function () {
+            Route::post('/', 'CountriesController@create');
+            Route::post('/{country}', 'CountriesController@update');
+            Route::delete('/{country}', 'CountriesController@delete');
+        });
     });
 });
