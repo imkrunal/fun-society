@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['namespace' => 'App\Http\Controllers'], function () {
+    Route::group(['prefix' => 'countries'], function () {
+        Route::get('/', 'CountriesController@index');
+        Route::post('/', 'CountriesController@create');
+        Route::get('/{country}', 'CountriesController@show');
+        Route::post('/{country}', 'CountriesController@update');
+        Route::delete('/{country}', 'CountriesController@delete');
+    });
 });
